@@ -92,6 +92,7 @@ const SegmentsPage = () => {
                   {filteredSegments.length > 0 ? (
                     filteredSegments.map((segment) => (
                       <tr key={segment.id} className="hover:bg-gray-50">
+                        
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
@@ -102,6 +103,7 @@ const SegmentsPage = () => {
                             </div>
                           </div>
                         </td>
+                        
                         <td className="px-6 py-4">
                           <div className="text-sm text-gray-900">
                             {segment.rules.minSpent && (
@@ -118,9 +120,7 @@ const SegmentsPage = () => {
                             )}
                           </div>
                         </td>
-                        {/* <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">-</div>
-                        </td> */}
+                        
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button
                             onClick={() => setEditingSegment(segment)}

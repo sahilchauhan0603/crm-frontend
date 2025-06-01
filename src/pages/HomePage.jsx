@@ -1,14 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiCheckCircle, FiBarChart2, FiUsers, FiMail, FiTarget } from 'react-icons/fi';
-// import heroImage from '../assets/hero-image.png'; // Replace with your image
-// import dashboardImage from '../assets/dashboard-preview.png'; // Replace with your image
-// import analyticsImage from '../assets/analytics-preview.png'; // Replace with your image
+import { useKindeAuth } from '@kinde-oss/kinde-auth-react';
+
 const heroImage = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80";
 const dashboardImage = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80";
 const analyticsImage = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80";
 
 const HomePage = () => {
+  const { isAuthenticated, login } = useKindeAuth();
+  const navigate = useNavigate();
+
   const features = [
     {
       icon: <FiUsers className="text-4xl mb-4 text-blue-600" />,
@@ -61,6 +63,15 @@ const HomePage = () => {
     "Gain real-time business insights",
     "Scale your operations effortlessly"
   ];
+
+  const handleFeatureClick = (e, link) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      login();
+    } else {
+      navigate(link);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50">
@@ -147,23 +158,45 @@ const HomePage = () => {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Everything you need to manage customer relationships effectively
             </p>
+            {!isAuthenticated && (
+              <p className="text-sm text-gray-500 mt-2">
+                Sign in to access all features
+              </p>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Link 
-                to={feature.link} 
+              <div 
                 key={index}
-                className={`p-8 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${feature.color}`}
+                className={`p-8 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${feature.color} ${
+                  !isAuthenticated ? 'cursor-pointer' : ''
+                }`}
+                onClick={!isAuthenticated ? (e) => {
+                  e.preventDefault();
+                  login();
+                } : undefined}
               >
-                <div className="flex flex-col items-center text-center">
+                <Link 
+                  to={isAuthenticated ? feature.link : '#'}
+                  onClick={(e) => handleFeatureClick(e, feature.link)}
+                  className="flex flex-col items-center text-center"
+                >
                   {feature.icon}
                   <h3 className="text-xl font-semibold mb-3 text-gray-900">{feature.title}</h3>
                   <p className="text-gray-600 mb-4">{feature.description}</p>
                   <div className="text-blue-600 font-medium flex items-center">
-                    Learn more <FiArrowRight className="ml-1" />
+                    {isAuthenticated ? (
+                      <>
+                        Learn more <FiArrowRight className="ml-1" />
+                      </>
+                    ) : (
+                      <>
+                        Sign in to access <FiArrowRight className="ml-1" />
+                      </>
+                    )}
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
             ))}
           </div>
         </div>

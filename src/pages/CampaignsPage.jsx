@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CampaignForm from '../components/CampaignForm';
-import { FiEdit2, FiTrash2, FiMail, FiCalendar, FiUsers, FiBarChart2 } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiMail, FiCalendar, FiUsers, FiBarChart2, FiDollarSign, FiActivity } from 'react-icons/fi';
 import axios from '../utils/axios';
 
 const CampaignsPage = () => {
@@ -57,13 +57,24 @@ const CampaignsPage = () => {
     return segment ? segment.name : 'Unknown Segment';
   };
 
-  const parseSegmentRules = (rules) => {
-    try {
-      return JSON.parse(rules);
-    } catch {
-      return {};
-    }
+  const getSegmentRule = (segmentId) => {
+    const segmentr = segments.find(s => s.id === segmentId);
+    try{
+      return typeof segmentr === 'string' ? JSON.parse(segmentr.rules) : segmentr.rules;
+    } catch (error) {
+        console.error('Failed to parse segment rules:', error);
+        return {};
+    } 
   };
+
+//   const parseSegmentRules = (rules) => {
+//   try {
+//     return typeof rules === 'string' ? JSON.parse(rules) : rules;
+//   } catch (error) {
+//     console.error('Failed to parse segment rules:', error);
+//     return {};
+//   }
+// };
 
   if (loading) {
     return (
@@ -109,9 +120,15 @@ const CampaignsPage = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredCampaigns.length > 0 ? (
                     filteredCampaigns.map((campaign) => {
-                      const rules = parseSegmentRules(campaign.segmentRules);
+                      const segment = segments.find(s => s.id === campaign.segment_id);
+                      const rules = segment ? getSegmentRule(campaign.segment_id) : {};
+
+                      console.log('Segment:', segment);
+                      console.log('Rules:', rules);
+
                       return (
                         <tr key={campaign.id} className="hover:bg-gray-50">
+                          
                           <td className="px-6 py-4">
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
@@ -126,22 +143,34 @@ const CampaignsPage = () => {
                               </div>
                             </div>
                           </td>
+
                           <td className="px-6 py-4">
                             <div className="text-sm font-medium text-gray-900">
                               {getSegmentName(campaign.segment_id)}
                             </div>
+                          </td>
+
+                          <td className="px-6 py-4">
                             <div className="text-sm text-gray-500">
-                              {rules.minSpent && (
-                                <span className="inline-block mr-2">Min spent: ${rules.minSpent}</span>
+                              {rules.total_spent?.gte ? (
+                                <div className="flex items-center">
+                                  <FiDollarSign className="mr-1 text-green-500" />
+                                  Min spent: ${rules.total_spent.gte}
+                                </div>
+                              ) : (
+                                <div>No spending criteria</div>
                               )}
-                              {rules.minVisits && (
-                                <span>Min visits: {rules.minVisits}</span>
+                              {rules.visits?.gte ? (
+                                <div className="flex items-center mt-1">
+                                  <FiActivity className="mr-1 text-purple-500" />
+                                  Min visits: {rules.visits.gte}
+                                </div>
+                              ) : (
+                                <div>No visit criteria</div>
                               )}
                             </div>
                           </td>
-                          <td className="px-6 py-4">
-                            <div className="text-sm text-gray-500">-</div>
-                          </td>
+
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <button
                               onClick={() => setEditingCampaign(campaign)}
