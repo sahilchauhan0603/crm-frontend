@@ -1,34 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AboutUsPage from './pages/AboutUsPage';
+import ContactUsPage from './pages/ContactUsPage';
+import CampaignsPage from './pages/CampaignsPage';
+import SegmentsPage from './pages/SegmentsPage';
+import CommunicationLogsPage from './pages/CommunicationLogsPage';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import OrdersPage from './pages/OrdersPage';
+import CustomersPage from './pages/CustomersPage';
+import Profile from './pages/Profile';
+import { Callback } from '@kinde-oss/kinde-auth-react';
+import LoadingBar from './components/LoadingBar';
+import ScrollToTop from './components/ScrollToTop';
 
-function App() {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500); // Simulate loading time
+
+    return () => clearTimeout(timer);
+  }, [location]);
+
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800 p-6">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold text-center">📊 Mini CRM Platform</h1>
-        <p className="text-center text-gray-600">Customer Segmentation & Campaign Management</p>
-      </header>
-
-      <main className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow">
-        <h2 className="text-xl font-semibold mb-4">Welcome!</h2>
-        <p className="mb-4">
-          This is the starting point of your CRM app. You can start building the following modules:
-        </p>
-        <ul className="list-disc list-inside space-y-2">
-          <li>🔐 Google OAuth Login</li>
-          <li>👥 Audience Segment Builder</li>
-          <li>📨 Campaign Creator</li>
-          <li>📈 Campaign History and Insights</li>
-          <li>🧠 AI Features</li>
-        </ul>
-
-        <div className="mt-6 text-center">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Get Started
-          </button>
-        </div>
-      </main>
+    <div className="flex flex-col min-h-screen bg-gray-100 text-gray-800">
+      <LoadingBar isLoading={isLoading} />
+      <ScrollToTop />
+      <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about-us" element={<AboutUsPage />} />
+          <Route path="/contact-us" element={<ContactUsPage />} />
+          <Route path="/campaigns" element={<CampaignsPage />} />
+          <Route path="/segments" element={<SegmentsPage />} />
+          <Route path="/communication-logs/:campaignId" element={<CommunicationLogsPage />} />
+          <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/callback" element={<Callback />} />
+        </Routes>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default App
+const AppWrapper = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default AppWrapper;
