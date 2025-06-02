@@ -152,18 +152,18 @@ const CampaignsPage = () => {
 
                           <td className="px-2 py-4">
                             <div className="text-sm text-gray-500">
-                              {rules.total_spent?.gte ? (
+                              {rules.minSpent ? (
                                 <div className="flex items-center">
                                   <FiDollarSign className="mr-1 text-green-500" />
-                                  Min spent: ${rules.total_spent.gte}
+                                  Min spent: ${rules.minSpent}
                                 </div>
                               ) : (
                                 <div>No spending criteria</div>
                               )}
-                              {rules.visits?.gte ? (
+                              {rules.minVisits ? (
                                 <div className="flex items-center mt-1">
                                   <FiActivity className="mr-1 text-purple-500" />
-                                  Min visits: {rules.visits.gte}
+                                  Min visits: {rules.minVisits}
                                 </div>
                               ) : (
                                 <div>No visit criteria</div>

@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import CreateCustomerForm from '../components/CreateCustomerForm';
 import { FiEdit2, FiTrash2, FiDollarSign, FiUser, FiPhone, FiMail, FiClock, FiActivity } from 'react-icons/fi';
 import axios from '../utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 const CustomersPage = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingCustomer, setEditingCustomer] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [newCustomer, setNewCustomer] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch customers on component mount
   useEffect(() => {
@@ -24,8 +28,10 @@ const CustomersPage = () => {
     fetchCustomers();
   }, []);
 
-  const handleCustomerCreated = (newCustomer) => {
-    setCustomers([...customers, newCustomer]);
+  const handleCustomerCreated = (customer) => {
+    setCustomers([...customers, customer]);
+    setNewCustomer(customer);
+    setShowPrompt(true); // Show the prompt only when a new customer is created
   };
 
   const handleUpdateCustomer = (updatedCustomer) => {
@@ -41,6 +47,13 @@ const CustomersPage = () => {
       setCustomers(customers.filter(customer => customer.email !== email));
     } catch (error) {
       console.error('Error deleting customer:', error);
+    }
+  };
+
+  const handlePromptResponse = (response) => {
+    setShowPrompt(false);
+    if (response === 'yes') {
+      navigate('/orders');
     }
   };
 
@@ -167,6 +180,31 @@ const CustomersPage = () => {
           </div>
         </div>
       </div>
+
+      {showPrompt && newCustomer && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+            <h3 className="text-lg font-semibold mb-4">Customer Created</h3>
+            <p className="text-gray-700 mb-4">
+              Do you want to place the orders for {newCustomer.name}?
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => handlePromptResponse('yes')}
+                className="bg-blue-600 text-white rounded-lg px-4 py-2 mr-2"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => handlePromptResponse('no')}
+                className="bg-gray-200 text-gray-700 rounded-lg px-4 py-2"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

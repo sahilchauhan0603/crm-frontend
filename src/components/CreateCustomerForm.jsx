@@ -31,7 +31,7 @@ const CreateCustomerForm = ({ onCustomerCreated, onCustomerUpdated, editingCusto
         alert('Customer updated successfully!');
       } else {
         await axios.post('/api/customers', formData);
-        onCustomerCreated(formData);
+        onCustomerCreated(formData); // Trigger callback for new customer creation
         alert('Customer created successfully!');
         setFormData({
           name: '',

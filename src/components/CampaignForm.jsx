@@ -87,7 +87,14 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
     }
   };
 
-  const currentRules = JSON.parse(formData.segmentRules || '{}');
+  // const currentRules = (() => {
+  //   try {
+  //     return JSON.parse(formData.segmentRules || '{}');
+  //   } catch (error) {
+  //     console.error('Error parsing segmentRules:', error);
+  //     return {};
+  //   }
+  // })();
 
   return (
     <form onSubmit={handleSubmit}>
@@ -128,11 +135,11 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
         ></textarea>
       </div>
 
-      {/* <MessageSuggestions campaignObjective={campaignObjective} /> */}
-      {!editingCampaign && <MessageSuggestions campaignObjective={campaignObjective} />}
+      <MessageSuggestions campaignObjective={campaignObjective} />
+      {/* {!editingCampaign && <MessageSuggestions campaignObjective={campaignObjective} />} */}
 
 
-      {formData.segment_id && (
+      {/* {formData.segment_id && (
         <div className="mb-4 bg-gray-50 p-4 rounded-lg">
           <h3 className="text-sm font-medium text-gray-700 mb-2">Segment Rules</h3>
           <div className="space-y-3">
@@ -175,12 +182,12 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
             )}
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="flex justify-between">
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-4 mt-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {editingCampaign ? 'Update Campaign' : 'Create Campaign'}
         </button>
