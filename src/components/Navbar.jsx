@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiUser, FiLogOut } from "react-icons/fi";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const navigate = useNavigate();
 
   const { isAuthenticated, login, register, logout, user } = useKindeAuth();
 
@@ -19,6 +21,14 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleProtectedRoute = (route) => {
+    if (!isAuthenticated) {
+      login();
+    } else {
+      navigate(route);
+    }
+  };
 
   return (
     <nav
@@ -34,9 +44,24 @@ const Navbar = () => {
             </Link>
             <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
               <NavLink to="/" text="Home" />
-              <NavLink to="/customers" text="Customers" />
-              <NavLink to="/campaigns" text="Campaigns" />
-              <NavLink to="/analytics" text="Analytics" />
+              <button
+                onClick={() => handleProtectedRoute("/customers")}
+                className="px-3 py-2 rounded-md text-sm font-medium text-black hover:text-blue-600 transition duration-300"
+              >
+                Customers
+              </button>
+              <button
+                onClick={() => handleProtectedRoute("/campaigns")}
+                className="px-3 py-2 rounded-md text-sm font-medium text-black hover:text-blue-600 transition duration-300"
+              >
+                Campaigns
+              </button>
+              <button
+                onClick={() => handleProtectedRoute("/analytics")}
+                className="px-3 py-2 rounded-md text-sm font-medium text-black hover:text-blue-600 transition duration-300"
+              >
+                Analytics
+              </button>
             </div>
           </div>
 
@@ -145,9 +170,24 @@ const Navbar = () => {
       <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <MobileNavLink to="/" text="Home" />
-          <MobileNavLink to="/customers" text="Customers" />
-          <MobileNavLink to="/campaigns" text="Campaigns" />
-          <MobileNavLink to="/analytics" text="Analytics" />
+          <button
+            onClick={() => handleProtectedRoute("/customers")}
+            className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-gray-100"
+          >
+            Customers
+          </button>
+          <button
+            onClick={() => handleProtectedRoute("/campaigns")}
+            className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-gray-100"
+          >
+            Campaigns
+          </button>
+          <button
+            onClick={() => handleProtectedRoute("/analytics")}
+            className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-gray-100"
+          >
+            Analytics
+          </button>
           {isAuthenticated ? (
             <>
               <MobileNavLink to="/profile" text="Profile" />
