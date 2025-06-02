@@ -15,6 +15,7 @@ import { Callback } from '@kinde-oss/kinde-auth-react';
 import LoadingBar from './components/LoadingBar';
 import ScrollToTop from './components/ScrollToTop';
 import LoadFromTop from './components/LoadFromTop';
+import AnalyticsPage from './pages/AnalyticsPage';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/callback" element={<Callback />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
         </Routes>
       <Footer />
     </div>
