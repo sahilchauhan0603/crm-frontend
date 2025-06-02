@@ -128,7 +128,9 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
         ></textarea>
       </div>
 
-      <MessageSuggestions campaignObjective={campaignObjective} />
+      {/* <MessageSuggestions campaignObjective={campaignObjective} /> */}
+      {!editingCampaign && <MessageSuggestions campaignObjective={campaignObjective} />}
+
 
       {formData.segment_id && (
         <div className="mb-4 bg-gray-50 p-4 rounded-lg">
