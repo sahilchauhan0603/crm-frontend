@@ -67,14 +67,13 @@ const CampaignsPage = () => {
     } 
   };
 
-//   const parseSegmentRules = (rules) => {
-//   try {
-//     return typeof rules === 'string' ? JSON.parse(rules) : rules;
-//   } catch (error) {
-//     console.error('Failed to parse segment rules:', error);
-//     return {};
-//   }
-// };
+  const renderDeliveryStats = (stats) => (
+    <div className="text-sm text-gray-500">
+      <div>Audience Size: {stats.audience_size}</div>
+      <div>Sent: {stats.sent}</div>
+      <div>Failed: {stats.failed}</div>
+    </div>
+  );
 
   if (loading) {
     return (
@@ -114,6 +113,7 @@ const CampaignsPage = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Campaign</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Segment</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery Stats</th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
@@ -150,7 +150,7 @@ const CampaignsPage = () => {
                             </div>
                           </td>
 
-                          <td className="px-6 py-4">
+                          <td className="px-2 py-4">
                             <div className="text-sm text-gray-500">
                               {rules.total_spent?.gte ? (
                                 <div className="flex items-center">
@@ -169,6 +169,10 @@ const CampaignsPage = () => {
                                 <div>No visit criteria</div>
                               )}
                             </div>
+                          </td>
+
+                          <td className="px-2 py-4">
+                            {renderDeliveryStats(campaign.deliveryStats)}
                           </td>
 
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -190,7 +194,7 @@ const CampaignsPage = () => {
                     })
                   ) : (
                     <tr>
-                      <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
+                      <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
                         No campaigns found
                       </td>
                     </tr>
