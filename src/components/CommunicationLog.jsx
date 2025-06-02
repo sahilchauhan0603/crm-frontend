@@ -34,7 +34,7 @@ const CommunicationLog = () => {
 
   const getCustomerName = (customerId) => {
     const customer = customers.find(c => c.id === customerId);
-    return customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown Customer';
+    return customer ? `${customer.name}` : 'Unknown Customer';
   };
 
   const getStatusBadge = (status) => {
@@ -87,8 +87,8 @@ const CommunicationLog = () => {
       <div className="p-6 border-b border-gray-200">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div className="mb-4 md:mb-0">
-            <h2 className="text-lg font-medium text-gray-900">
-              Message History for Campaign: {campaign ? campaign.message : 'Loading...'}
+            <h2 className="text-lg font-medium text-black">
+              Message History for Campaign: <span className="text-blue-800">{campaign ? campaign.message : 'Loading...'}</span>
             </h2>
             <p className="text-sm text-gray-500">
               {logs.length} {logs.length === 1 ? 'entry' : 'entries'} found
