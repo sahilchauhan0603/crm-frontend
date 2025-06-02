@@ -42,7 +42,7 @@ const CampaignsPage = () => {
   const handleDeleteCampaign = async (campaignId) => {
     try {
       await axios.delete(`/api/campaigns/${campaignId}`);
-      setCampaigns(campaigns.filter(campaign => campaign.campaign_id !== campaignId));
+      setCampaigns(campaigns.filter(campaign => campaign.id !== campaignId));
     } catch (error) {
       console.error('Error deleting campaign:', error);
     }
@@ -183,7 +183,7 @@ const CampaignsPage = () => {
                               <FiEdit2 />
                             </button>
                             <button
-                              onClick={() => handleDeleteCampaign(campaign.campaign_id)}
+                              onClick={() => handleDeleteCampaign(campaign.id)}
                               className="text-red-600 hover:text-red-900"
                             >
                               <FiTrash2 />

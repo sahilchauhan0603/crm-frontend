@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FiMail, FiUsers, FiCalendar, FiDollarSign, FiActivity } from 'react-icons/fi';
 import axios from '../utils/axios';
+import MessageSuggestions from './MessageSuggestions';
 
-const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, setEditingCampaign, segments }) => {
+const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, setEditingCampaign, segments, campaignObjective }) => {
   const [formData, setFormData] = useState({
     segment_id: '',
     message: '',
@@ -91,7 +92,7 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label htmlFor="segment_id" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+        <label htmlFor="segment_id" className="flex text-sm font-medium text-gray-700 mb-1 items-center">
           <FiUsers className="mr-2" /> Target Segment
         </label>
         <select
@@ -112,7 +113,7 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
       </div>
 
       <div className="mb-4">
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+        <label htmlFor="message" className="flex text-sm font-medium text-gray-700 mb-1 items-center">
           <FiMail className="mr-2" /> Campaign Message
         </label>
         <textarea
@@ -126,6 +127,8 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
           placeholder="Special offer for our valued customers..."
         ></textarea>
       </div>
+
+      <MessageSuggestions campaignObjective={campaignObjective} />
 
       {formData.segment_id && (
         <div className="mb-4 bg-gray-50 p-4 rounded-lg">
