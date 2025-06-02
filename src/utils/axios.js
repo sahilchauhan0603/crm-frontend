@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000', // Replace with your backend URL
+  // baseURL: 'http://localhost:5000', 
+  baseURL: 'https://crm-backend-v6pq.onrender.com', 
   headers: {
     'Content-Type': 'application/json',
   },
