@@ -1,0 +1,47 @@
+.rule-builder {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rule select,
+.rule input {
+  margin-right: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.rule button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rule button:hover {
+  background-color: #e60000;
+}
+
+.rule-builder button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rule-builder button:hover {
+  background-color: #45a049;
+}

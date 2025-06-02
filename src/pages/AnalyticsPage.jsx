@@ -1,35 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiBarChart2, FiUsers, FiMail, FiTarget, FiCheckCircle } from 'react-icons/fi';
+import axios from '../utils/axios';
 import useChatbase from './../hooks/useChatbase';
 
+const iconMap = {
+  FiUsers: <FiUsers />,
+  FiMail: <FiMail />,
+  FiTarget: <FiTarget />,
+  FiCheckCircle: <FiCheckCircle />,
+};
+
 const AnalyticsPage = () => {
-    useChatbase();
-  const summaryData = [
-    {
-      title: 'Total Customers',
-      value: '1,200+',
-      icon: <FiUsers className="text-4xl text-blue-600" />,
-      description: 'Active customers managed in the CRM.'
-    },
-    {
-      title: 'Campaigns Created',
-      value: '350+',
-      icon: <FiMail className="text-4xl text-purple-600" />,
-      description: 'Marketing campaigns delivered successfully.'
-    },
-    {
-      title: 'Segments Built',
-      value: '120+',
-      icon: <FiTarget className="text-4xl text-yellow-600" />,
-      description: 'Targeted customer segments created.'
-    },
-    {
-      title: 'Orders Processed',
-      value: '5,000+',
-      icon: <FiCheckCircle className="text-4xl text-green-600" />,
-      description: 'Orders tracked and fulfilled.'
-    }
-  ];
+  useChatbase();
+  const [summaryData, setSummaryData] = useState([]);
+
+  useEffect(() => {
+    const fetchSummaryData = async () => {
+      try {
+        const response = await axios.get('/api/analytics/summary');
+        const mappedData = response.data.map((data) => ({
+          ...data,
+          icon: iconMap[data.icon] || null,
+        }));
+        setSummaryData(mappedData);
+      } catch (error) {
+        console.error('Error fetching summary data:', error);
+      }
+    };
+
+    fetchSummaryData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">

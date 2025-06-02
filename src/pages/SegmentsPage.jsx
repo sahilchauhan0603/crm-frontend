@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SegmentForm from '../components/SegmentForm';
+import DynamicRuleBuilder from '../components/DynamicRuleBuilder';
 import { FiEdit2, FiTrash2, FiUsers, FiDollarSign, FiActivity } from 'react-icons/fi';
 import axios from '../utils/axios';
 
@@ -42,6 +43,15 @@ const SegmentsPage = () => {
       console.error('Error deleting segment:', error);
     }
   };
+
+  // const handleSaveRules = async (rules) => {
+  //   try {
+  //     const response = await axios.post('/api/segments/rules', { rules });
+  //     console.log('Rules saved successfully:', response.data);
+  //   } catch (error) {
+  //     console.error('Error saving rules:', error);
+  //   }
+  // };
 
   const filteredSegments = segments.filter(segment =>
     segment.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -161,6 +171,10 @@ const SegmentsPage = () => {
               editingSegment={editingSegment}
               setEditingSegment={setEditingSegment}
             />
+            {/* <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-4">Define Audience Rules</h3>
+              <DynamicRuleBuilder onSave={handleSaveRules} />
+            </div> */}
           </div>
         </div>
       </div>

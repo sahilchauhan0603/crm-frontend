@@ -57,7 +57,7 @@ const Navbar = () => {
                 Campaigns
               </button>
               <button
-                onClick={() => handleProtectedRoute("/analytics")}
+                onClick={() => navigate('/analytics')}
                 className="px-3 py-2 rounded-md text-sm font-medium text-black hover:text-blue-600 transition duration-300"
               >
                 Analytics
@@ -183,7 +183,7 @@ const Navbar = () => {
             Campaigns
           </button>
           <button
-            onClick={() => handleProtectedRoute("/analytics")}
+            onClick={() => navigate('/analytics')}
             className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-gray-100"
           >
             Analytics
