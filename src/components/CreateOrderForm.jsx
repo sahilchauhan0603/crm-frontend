@@ -30,7 +30,7 @@ const CreateOrderForm = ({ onOrderPlaced, onOrderUpdated, editingOrder, setEditi
         alert('Order updated successfully!');
       } else {
         const response = await axios.post('/api/orders', formData);
-        onOrderPlaced(response.data);
+        onOrderPlaced(response.data); // Trigger callback for new order creation
         alert('Order created successfully!');
         setFormData({
           customer_id: '',

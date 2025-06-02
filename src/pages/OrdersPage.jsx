@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import CreateOrderForm from '../components/CreateOrderForm';
 import { FiEdit2, FiTrash2, FiDollarSign, FiShoppingCart, FiCalendar, FiUser } from 'react-icons/fi';
 import axios from '../utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 const OrdersPage = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingOrder, setEditingOrder] = useState(null);
   const [customers, setCustomers] = useState([]);
+  const [showPrompt, setShowPrompt] = useState(false);
 
   // Fetch orders and customers on component mount
   useEffect(() => {
@@ -31,6 +34,7 @@ const OrdersPage = () => {
 
   const handleOrderPlaced = (newOrder) => {
     setOrders([...orders, newOrder]);
+    setShowPrompt(true); // Show the prompt after placing an order
   };
 
   const handleUpdateOrder = (updatedOrder) => {
@@ -46,6 +50,13 @@ const OrdersPage = () => {
       setOrders(orders.filter(order => order.order_id !== orderId));
     } catch (error) {
       console.error('Error deleting order:', error);
+    }
+  };
+
+  const handlePromptResponse = (response) => {
+    setShowPrompt(false);
+    if (response === 'yes') {
+      navigate('/segments');
     }
   };
 
@@ -73,6 +84,28 @@ const OrdersPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {showPrompt && (
+        <div className="fixed inset-0 flex items-center justify-center ">
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <p className="text-gray-800 text-center">Would you like to create a new segment?</p>
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() => handlePromptResponse('yes')}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 mx-2"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => handlePromptResponse('no')}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 mx-2"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-800">Order Management</h1>
