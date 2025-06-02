@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import { Callback } from '@kinde-oss/kinde-auth-react';
 import LoadingBar from './components/LoadingBar';
 import ScrollToTop from './components/ScrollToTop';
+import LoadFromTop from './components/LoadFromTop';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +57,7 @@ const App = () => {
 
 const AppWrapper = () => (
   <Router>
+    <LoadFromTop />
     <App />
   </Router>
 );
