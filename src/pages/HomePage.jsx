@@ -73,6 +73,13 @@ const HomePage = () => {
     }
   };
 
+  const scrollToFeatures = () => {
+    const featuresSection = document.getElementById('features-grid');
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50">
       {/* Hero Section */}
@@ -90,7 +97,11 @@ const HomePage = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Link 
-                    to="/login" 
+                    to="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToFeatures();
+                    }}
                     className="flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition duration-300 shadow-lg hover:shadow-xl"
                   >
                     Get Started <FiArrowRight className="ml-2" />
@@ -149,7 +160,7 @@ const HomePage = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section id="features-grid" className="py-16 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
