@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiActivity } from 'react-icons/fi';
 import axios from '../utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 const SegmentForm = ({ onSegmentCreated, onSegmentUpdated, editingSegment, setEditingSegment }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ const SegmentForm = ({ onSegmentCreated, onSegmentUpdated, editingSegment, setEd
       minVisits: ''
     }
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (editingSegment) {
@@ -61,6 +64,7 @@ const SegmentForm = ({ onSegmentCreated, onSegmentUpdated, editingSegment, setEd
             minVisits: ''
           }
         });
+        navigate('/campaigns');
       }
     } catch (error) {
       console.error('Error saving segment:', error);

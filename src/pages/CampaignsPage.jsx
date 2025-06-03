@@ -69,9 +69,9 @@ const CampaignsPage = () => {
 
   const renderDeliveryStats = (stats) => (
     <div className="text-sm text-gray-500">
-      <div>Audience Size: {stats.audience_size}</div>
-      <div>Sent: {stats.sent}</div>
-      <div>Failed: {stats.failed}</div>
+      <div>Audience Size: {stats?.audience_size ?? 'N/A'}</div>
+      <div>Sent: {stats?.sent ?? 'N/A'}</div>
+      <div>Failed: {stats?.failed ?? 'N/A'}</div>
     </div>
   );
 
