@@ -122,6 +122,10 @@ User Interaction
 +-------------------+
 ```
 
+### Explanation
+
+The workflow diagram illustrates the flow of data and user interactions in the frontend. It starts with **User Interaction** on the interface, which triggers actions on **Pages**. These pages use **Components** to display content and functionality. **Hooks** manage reusable logic, such as state or API calls, which then communicate with the **Backend** to fetch or update data. This ensures a seamless and efficient user experience.
+
 [🔗 Back to Top](#-frontend---crm-xeno)
 
 ---
