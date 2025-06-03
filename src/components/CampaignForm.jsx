@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiMail, FiUsers, FiCalendar, FiDollarSign, FiActivity } from 'react-icons/fi';
 import axios from '../utils/axios';
 import MessageSuggestions from './MessageSuggestions';
+import { useNavigate } from 'react-router-dom';
 
 const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, setEditingCampaign, segments, campaignObjective }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
       minVisits: ''
     })
   });
+  const [redirectMessage, setRedirectMessage] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (editingCampaign) {
@@ -80,6 +83,8 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
             minVisits: ''
           })
         });
+        setRedirectMessage('Redirecting you to Communication Logs page within 3 seconds...');
+        setTimeout(() => navigate('/communication-logs'), 3000);
       }
     } catch (error) {
       console.error('Error saving campaign:', error);
@@ -98,6 +103,12 @@ const CampaignForm = ({ onCampaignCreated, onCampaignUpdated, editingCampaign, s
 
   return (
     <form onSubmit={handleSubmit}>
+      {redirectMessage && (
+        <div className="bg-yellow-100 text-yellow-800 p-4 rounded-md mb-4">
+          {redirectMessage}
+        </div>
+      )}
+
       <div className="mb-4">
         <label htmlFor="segment_id" className="flex text-sm font-medium text-gray-700 mb-1 items-center">
           <FiUsers className="mr-2" /> Target Segment

@@ -1,41 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { FiMail, FiUser, FiCalendar, FiCheck, FiX, FiClock } from 'react-icons/fi';
+import { FiCalendar, FiCheck, FiX, FiClock } from 'react-icons/fi';
 import axios from '../utils/axios';
-import { useParams } from 'react-router-dom';
 
 const CommunicationLog = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [customers, setCustomers] = useState([]);
-  const [campaign, setCampaign] = useState(null);
-  const { campaignId } = useParams();
 
   useEffect(() => {
-    console.log('Campaign ID:', campaignId); // Log the campaign ID
     const fetchData = async () => {
       try {
-        const [logsResponse, customersResponse, campaignResponse] = await Promise.all([
-          axios.get(`/api/communication/logs/${campaignId}`),
-          axios.get('/api/customers'),
-          axios.get(`/api/campaigns/${campaignId}`)
-        ]);
+        const logsResponse = await axios.get('/api/communication/logs');
         setLogs(logsResponse.data);
-        setCustomers(customersResponse.data);
-        setCampaign(campaignResponse.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching hello communication logs:', error);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [campaignId]);
-
-  const getCustomerName = (customerId) => {
-    const customer = customers.find(c => c.id === customerId);
-    return customer ? `${customer.name}` : 'Unknown Customer';
-  };
+  }, []);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -66,13 +50,9 @@ const CommunicationLog = () => {
     }
   };
 
-  const filteredLogs = logs.filter(log => {
-    const customerName = getCustomerName(log.customer_id).toLowerCase();
-    return (
-      customerName.includes(searchTerm.toLowerCase()) ||
-      log.status.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredLogs = logs.filter(log =>
+    log.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -87,9 +67,7 @@ const CommunicationLog = () => {
       <div className="p-6 border-b border-gray-200">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div className="mb-4 md:mb-0">
-            <h2 className="text-lg font-medium text-black">
-              Message History for Campaign: <span className="text-blue-800">{campaign ? campaign.message : 'Loading...'}</span>
-            </h2>
+            <h2 className="text-lg font-medium text-black">Message History</h2>
             <p className="text-sm text-gray-500">
               {logs.length} {logs.length === 1 ? 'entry' : 'entries'} found
             </p>
@@ -110,7 +88,8 @@ const CommunicationLog = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
             </tr>
@@ -120,19 +99,10 @@ const CommunicationLog = () => {
               filteredLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                        <FiUser className="text-blue-600" />
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {getCustomerName(log.customer_id)}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          ID: {log.customer_id}
-                        </div>
-                      </div>
-                    </div>
+                    {log.customer_name || 'Unknown Customer'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {log.message || 'No message'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getStatusBadge(log.status)}
@@ -147,31 +117,13 @@ const CommunicationLog = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
-                  No communication logs found for this campaign
+                <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
+                  No communication logs found
                 </td>
               </tr>
             )}
           </tbody>
         </table>
-      </div>
-
-      {/* Pagination would go here */}
-      <div className="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
-        <div className="flex-1 flex justify-between">
-          <button
-            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            disabled
-          >
-            Previous
-          </button>
-          <button
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            disabled
-          >
-            Next
-          </button>
-        </div>
       </div>
     </div>
   );
