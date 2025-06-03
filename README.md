@@ -156,6 +156,26 @@ The workflow diagram illustrates the flow of data and user interactions in the f
 
 ---
 
+## 🔒 Authentication
+
+The frontend uses **Kinde-auth** for token-based authentication to ensure secure access to the application. Users must log in via Kinde-auth, which provides a token stored in local storage and used for subsequent API requests.
+
+## 💬 Chatbase Integration
+
+The application integrates with [Chatbase.co](https://chatbase.co) to provide advanced chatbot capabilities. The `useChatbase` custom hook is used to interact with Chatbase APIs, enabling features like automated responses and user interaction tracking.
+
+---
+
+## ⚠️ Limitations
+
+- The application currently lacks real-time updates for data changes.
+- Limited support for internationalization (i18n).
+- Chatbase integration is basic and does not support advanced analytics.
+- Authentication is limited to token-based login without multi-factor authentication (MFA).
+- The frontend does not have offline support or caching mechanisms for better performance.
+
+---
+
 ## 🧩 Explanation of Logic
 
 ### Pages
