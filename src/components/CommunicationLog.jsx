@@ -102,7 +102,7 @@ const CommunicationLog = () => {
                     {log.customer_name || 'Unknown Customer'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {log.message || 'No message'}
+                    {log.campaign_message || 'No message'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getStatusBadge(log.status)}
